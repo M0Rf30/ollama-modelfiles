@@ -1,0 +1,21 @@
+# https://huggingface.co/TheBloke/BigTranslate-13B-GGML/blob/main/bigtrans-13b.ggmlv3.q4_0.bin
+# Usage example:
+# ollama run Modelfile:latest "please translate the following into Italian: 汉语使用的文字是汉字，以漢字寫成的詞、詞組、句子、段落、文字作品，稱為中文（又稱華文、國文、汉文、唐文）。漢字是一种意音文字，表意之同時也具一定表音功能；而漢語属分析语，且声调辨義。"
+FROM ./bigtrans-13b.ggmlv3.q4_0.bin
+PARAMETER temperature 0.2
+PARAMETER num_ctx 1024
+PARAMETER top_k 80
+PARAMETER top_p 0.7
+TEMPLATE """
+{{- if .First }}
+### System:
+{{ .System }}
+{{- end }}
+
+### User:
+{{ .Prompt }}
+
+### Response:
+"""
+
+SYSTEM """Below is an instruction that describes a task. Write a response that appropriately completes the request."""
